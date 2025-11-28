@@ -1,0 +1,16 @@
+echo node_modules/ > .gitignore
+echo .next/ >> .gitignore
+echo dist/ >> .gitignore
+echo build/ >> .gitignore
+echo .env >> .gitignore
+echo .env.local >> .gitignore
+```
+
+Или можешь открыть любой текстовый редактор (например, Notepad++ или VS Code), вставить туда:
+```
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
