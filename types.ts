@@ -1,10 +1,10 @@
-
 export interface Project {
   id: number;
   title: string;
   category: string;
   image: string;
   year: string;
+  html?: string; // Опциональное поле для HTML iframe
 }
 
 export interface Service {
@@ -24,10 +24,11 @@ export interface Slide {
   title: string;
   subtitle: string;
   description: string;
-  image: string;
+  html?: string; // Опциональное поле для HTML iframe
+  image?: string; // Теперь опциональное - может быть либо HTML, либо image
   colors: {
     background: string;
     text: string;
     subtext: string;
-  }
+  };
 }
