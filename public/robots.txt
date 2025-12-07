@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://deepinside.pro/sitemap.xml
+Host: https://deepinside.pro

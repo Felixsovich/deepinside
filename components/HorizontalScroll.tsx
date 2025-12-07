@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'framer-motion';
 import { HORIZONTAL_SLIDES } from '../constants';
-import { ChevronRight, ChevronLeft, ArrowDown } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ArrowDown, Send } from 'lucide-react';
 
 const HorizontalScroll: React.FC = () => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -42,10 +42,12 @@ const HorizontalScroll: React.FC = () => {
   const x = useTransform(smoothIndex, (value) => {
     return isMobile
       ? `calc(${-value} * 100vw)`
-      : `calc(${-value} * (100vw - 6rem))`;
+      : `calc(${-value} * (100vw - 7rem))`; // Чуть увеличил отступ для меню
   });
 
+  // Берем цвета текущего слайда для UI элементов
   const currentColors = HORIZONTAL_SLIDES[activeSlide]?.colors || HORIZONTAL_SLIDES[0].colors;
+  const isLastSlide = activeSlide === HORIZONTAL_SLIDES.length - 1;
 
   const scrollToSlide = (index: number) => {
     if (!targetRef.current) return;
@@ -67,11 +69,13 @@ const HorizontalScroll: React.FC = () => {
       id="process"
       ref={targetRef}
       className="relative w-full"
-      style={{ height: `${HORIZONTAL_SLIDES.length * 100}vh` }}
+      style={{ height: `${HORIZONTAL_SLIDES.length * 100}vh` }} // Высота секции зависит от кол-ва слайдов
     >
       <div className="sticky top-0 h-screen overflow-hidden w-full">
+
+        {/* === ДИНАМИЧЕСКИЙ ФОН === */}
         <motion.div
-          className="absolute inset-0 z-0 transition-colors duration-700 ease-in-out"
+          className="absolute inset-0 z-0 transition-colors duration-1000 ease-in-out"
           style={{ backgroundColor: currentColors.background }}
         />
 
@@ -79,71 +83,67 @@ const HorizontalScroll: React.FC = () => {
           style={{ x }}
           className="flex h-full"
         >
-          {HORIZONTAL_SLIDES.map((slide) => (
+          {HORIZONTAL_SLIDES.map((slide, index) => (
             <div
               key={slide.id}
-              className="relative h-screen flex-shrink-0 flex flex-col justify-center px-6 md:px-12 w-screen md:w-[calc(100vw-6rem)]"
+              className="relative h-screen flex-shrink-0 flex flex-col justify-center px-6 md:px-16 w-screen md:w-[calc(100vw-7rem)] overflow-hidden"
             >
-              {/* КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Проверяем наличие HTML или изображения */}
+              {/* === ФОНОВОЕ ИЗОБРАЖЕНИЕ ИЛИ ВИДЕО (АТМОСФЕРА) === */}
               {slide.html ? (
-                // HTML iframe на весь экран
-                <div className="absolute inset-0 z-0">
+                // Если вдруг нужен iframe (для редких случаев)
+                <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
                   <iframe
                     src={slide.html}
-                    className="w-full h-full border-none"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups"
-                    loading="lazy"
-                    title={slide.title}
+                    className="w-full h-full border-none grayscale"
+                    tabIndex={-1}
                   />
+                  <div className="absolute inset-0 bg-stone-950/60" />
                 </div>
               ) : slide.image ? (
-                // Background Image Accent (если нет HTML)
-                <div className="absolute right-0 top-0 w-full md:w-2/3 h-full opacity-10 mix-blend-overlay pointer-events-none">
-                  <img
+                // Картинка с красивым наложением
+                <div className="absolute inset-0 z-0">
+                  <motion.img
                     src={slide.image}
                     alt={slide.title}
-                    className="w-full h-full object-cover mask-image-gradient"
+                    initial={{ scale: 1.1 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 10 }} // Медленный зум (эффект Кена Бернса)
+                    className="w-full h-full object-cover opacity-30 md:opacity-40 mix-blend-overlay grayscale hover:grayscale-0 transition-all duration-1000"
                   />
+                  {/* Градиент, чтобы текст читался идеально */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
                 </div>
               ) : null}
 
-              {/* Контент поверх (с затемнением для читаемости на HTML) */}
-              <div
-                className="relative z-10 max-w-4xl mt-[-5vh]"
-                style={{
-                  textShadow: slide.html ? '0 2px 10px rgba(0,0,0,0.8)' : 'none'
-                }}
-              >
-                <div className="flex items-center gap-4 mb-4 md:mb-8">
+              {/* === КОНТЕНТ === */}
+              <div className="relative z-10 max-w-5xl mt-[-5vh]">
+                <div className="flex items-center gap-4 mb-6">
                   <motion.span
-                    className="font-mono text-xs md:text-sm tracking-widest border px-4 py-1.5 rounded-full backdrop-blur-md uppercase"
+                    className="font-mono text-xs md:text-sm tracking-[0.2em] border px-4 py-1.5 rounded-full uppercase"
                     style={{
                       color: slide.colors.subtext,
                       borderColor: slide.colors.subtext,
-                      backgroundColor: slide.html ? 'rgba(0,0,0,0.5)' : 'transparent'
                     }}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
                   >
                     {slide.subtitle}
                   </motion.span>
+
                   <motion.div
-                    className="h-[1px] w-12 md:w-24"
+                    className="h-[1px] w-12 md:w-32"
                     style={{ backgroundColor: slide.colors.subtext }}
                     initial={{ width: 0 }}
-                    whileInView={{ width: 96 }}
+                    whileInView={{ width: 128 }}
                     transition={{ delay: 0.3 }}
                   />
                 </div>
 
                 <motion.h2
-                  className="text-[14vw] md:text-[7vw] font-bold tracking-tighter leading-[0.9] md:leading-[0.85] mb-4 md:mb-8 font-serif"
-                  style={{
-                    color: slide.colors.text,
-                    textShadow: slide.html ? '0 4px 20px rgba(0,0,0,0.9)' : 'none'
-                  }}
-                  initial={{ opacity: 0, y: 50 }}
+                  className="text-[12vw] md:text-[6vw] font-bold tracking-tighter leading-[0.9] mb-6 md:mb-8 font-serif uppercase"
+                  style={{ color: slide.colors.text }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                 >
@@ -151,25 +151,39 @@ const HorizontalScroll: React.FC = () => {
                 </motion.h2>
 
                 <motion.p
-                  className="text-lg md:text-2xl font-light max-w-xl leading-relaxed"
-                  style={{
-                    color: slide.colors.subtext,
-                    textShadow: slide.html ? '0 2px 10px rgba(0,0,0,0.8)' : 'none',
-                    backgroundColor: slide.html ? 'rgba(0,0,0,0.3)' : 'transparent',
-                    padding: slide.html ? '1rem' : '0',
-                    borderRadius: slide.html ? '0.5rem' : '0'
-                  }}
+                  className="text-lg md:text-2xl font-light max-w-xl leading-relaxed font-sans"
+                  style={{ color: slide.colors.subtext }}
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
                   {slide.description}
                 </motion.p>
+
+                {/* === КНОПКА CTA (Только на последнем слайде) === */}
+                {index === HORIZONTAL_SLIDES.length - 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-12"
+                  >
+                    <a
+                      href="https://t.me/starunstyle"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-3 px-8 py-4 bg-stone-100 text-stone-950 rounded-full font-medium hover:bg-white hover:scale-105 transition-all duration-300 group shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                    >
+                      <span>Начать свой путь</span>
+                      <Send size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </motion.div>
+                )}
               </div>
 
-              {/* Номер слайда */}
+              {/* Огромный номер на фоне */}
               <div
-                className="absolute bottom-[-2vh] right-[2vw] md:bottom-[-5vh] md:right-[5vw] font-serif text-[15vh] md:text-[30vh] font-bold opacity-10 select-none pointer-events-none"
+                className="absolute bottom-[-5vh] right-[2vw] md:bottom-[-10vh] md:right-[5vw] font-serif text-[20vh] md:text-[40vh] font-bold opacity-5 select-none pointer-events-none"
                 style={{ color: slide.colors.text }}
               >
                 0{slide.id}
@@ -178,44 +192,50 @@ const HorizontalScroll: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* Controls Overlay */}
+        {/* === НАВИГАЦИЯ (Точки слева) === */}
         <div className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-4 hidden md:flex">
           {HORIZONTAL_SLIDES.map((slide, idx) => (
             <button
               key={slide.id}
               onClick={() => scrollToSlide(idx)}
-              className="group flex items-center gap-2"
+              className="group flex items-center gap-4"
+              aria-label={`Перейти к этапу ${slide.title}`}
             >
               <div
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSlide === idx ? 'w-8 bg-white' : 'bg-white/30 group-hover:bg-white/70'}`}
+                className={`h-2 rounded-full transition-all duration-500 ${activeSlide === idx ? 'w-12 bg-white' : 'w-2 bg-white/30 group-hover:bg-white/70'}`}
                 style={{ backgroundColor: activeSlide === idx ? currentColors.text : undefined }}
               />
             </button>
           ))}
         </div>
 
-        <div className="absolute bottom-6 md:bottom-12 left-0 right-0 px-6 md:px-12 flex justify-between items-end z-20 pointer-events-none">
-          <div className="hidden md:flex items-center gap-2 animate-bounce opacity-70" style={{ color: currentColors.text }}>
-            <ArrowDown size={20} />
-            <span className="uppercase text-xs tracking-widest">Листайте для познания</span>
+        {/* === НИЖНЯЯ ПАНЕЛЬ === */}
+        <div className="absolute bottom-6 md:bottom-12 left-0 right-0 px-6 md:px-16 flex justify-between items-end z-20 pointer-events-none">
+          {/* Индикатор скролла */}
+          <div className="hidden md:flex items-center gap-3 opacity-60 mix-blend-difference" style={{ color: currentColors.text }}>
+            <ArrowDown size={20} className="animate-bounce" />
+            <span className="uppercase text-xs tracking-[0.2em] font-mono">
+              {isLastSlide ? 'Финал пути' : 'Листайте вниз'}
+            </span>
           </div>
 
+          {/* Кнопки Вперед/Назад */}
           <div className="flex gap-4 pointer-events-auto ml-auto md:ml-0">
             <button
               onClick={() => scrollToSlide(Math.max(0, activeSlide - 1))}
               disabled={activeSlide === 0}
-              className="p-3 md:p-4 rounded-full border border-white/20 backdrop-blur-sm hover:bg-white hover:text-black transition-all disabled:opacity-30"
-              style={{ color: currentColors.text, borderColor: `${currentColors.text}40` }}
+              className="p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md hover:bg-white/10 text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+              style={{ color: currentColors.text, borderColor: `${currentColors.text}30` }}
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={24} />
             </button>
             <button
               onClick={() => scrollToSlide(Math.min(HORIZONTAL_SLIDES.length - 1, activeSlide + 1))}
               disabled={activeSlide === HORIZONTAL_SLIDES.length - 1}
-              className="p-3 md:p-4 rounded-full border border-white/20 backdrop-blur-sm hover:bg-white hover:text-black transition-all disabled:opacity-30"
-              style={{ color: currentColors.text, borderColor: `${currentColors.text}40` }}
+              className="p-3 md:p-4 rounded-full border border-white/10 backdrop-blur-md hover:bg-white/10 text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+              style={{ color: currentColors.text, borderColor: `${currentColors.text}30` }}
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={24} />
             </button>
           </div>
         </div>

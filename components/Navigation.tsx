@@ -16,66 +16,86 @@ const Navigation: React.FC = () => {
   };
 
   const navItems = [
-    { id: '#work', label: 'АРТЕФАКТЫ', icon: Square, rotate: 0 },
-    { id: '#process', label: 'РИТУАЛ', icon: Triangle, rotate: 180 },
-    { id: '#services', label: 'ДАРЫ', icon: Hexagon, rotate: 0 },
-    { id: '#contact', label: 'СВЯЗЬ', icon: Circle, rotate: 0 },
+    { id: '#work', label: 'ИСТОРИИ', icon: Square, rotate: 0 },
+    { id: '#process', label: 'МЕТОД', icon: Triangle, rotate: 180 },
+    { id: '#services', label: 'ПРАКТИКИ', icon: Hexagon, rotate: 0 },
+    { id: '#contact', label: 'КОНТАКТ', icon: Circle, rotate: 0 },
   ];
 
   return (
     <>
-      {/* ================= DESKTOP SIDEBAR (Hidden on Mobile) ================= */}
-      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-24 bg-[#050505] border-r border-stone-800 z-50 flex-col justify-between items-center py-12">
-        {/* Home Button / Logo */}
+      {/* ================= DESKTOP SIDEBAR ================= */}
+      <nav className="hidden md:flex fixed left-0 top-0 bottom-0 w-28 bg-[#050505] border-r border-stone-800 z-50 flex-col justify-between items-center py-8">
+
+        {/* ЛОГОТИП (Исправил поворот) */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="group relative h-48 flex items-center justify-center w-full outline-none"
+          className="group relative h-40 flex items-center justify-center w-full outline-none"
+          aria-label="На главную"
         >
-          <div className="absolute inset-0 bg-stone-900 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
-          <span className="writing-vertical-rl text-2xl font-bold tracking-tighter text-white rotate-0 z-10 group-hover:text-stone-300 transition-colors font-serif">
+          {/* Эффект подсветки фона при наведении */}
+          <div className="absolute inset-0 bg-stone-900/50 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
+
+          {/* writing-vertical-rl делает текст вертикальным. rotate-0 оставляет чтение сверху-вниз */}
+          <span className="writing-vertical-rl text-2xl font-bold tracking-widest text-stone-500 group-hover:text-stone-100 transition-colors duration-500 font-serif z-10">
             STARUN
           </span>
         </button>
 
-        {/* Rune Navigation */}
-        <div className="flex flex-col gap-12 items-center">
+        {/* НАВИГАЦИЯ С ЭФФЕКТОМ "ДЫХАНИЯ" */}
+        <div className="flex flex-col gap-8 items-center w-full">
           {navItems.map((item) => (
-            <div key={item.id} className="relative group flex items-center justify-center">
-              {/* Hover Label */}
-              <div className="absolute left-14 overflow-hidden pointer-events-none">
-                <span className="bg-stone-100 text-black text-xs font-bold px-4 py-2 uppercase tracking-widest whitespace-nowrap opacity-0 -translate-x-4 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300 ease-out shadow-xl font-serif">
-                  {item.label}
-                </span>
-              </div>
+            <motion.button
+              key={item.id}
+              onClick={() => scrollToSection(item.id)}
+              className="group flex flex-col items-center gap-3 w-full py-2 relative"
+              initial="initial"
+              whileHover="hover"
+              aria-label={item.label}
+            >
+              {/* Активная полоска слева при наведении */}
+              <motion.div
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-white"
+                variants={{
+                  initial: { height: 0 },
+                  hover: { height: '100%' }
+                }}
+                transition={{ duration: 0.3 }}
+              />
 
-              {/* Icon / Rune */}
-              <button
-                onClick={() => scrollToSection(item.id)}
-                className="relative w-10 h-10 flex items-center justify-center text-stone-500 hover:text-white transition-colors duration-300"
+              {/* Иконка с вращением */}
+              <motion.div
+                variants={{
+                  initial: { rotate: item.rotate, scale: 1, color: "#78716c" }, // stone-500
+                  hover: { rotate: item.rotate + 90, scale: 1.1, color: "#f5f5f4" } // stone-100
+                }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: item.rotate + 90 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <item.icon
-                    size={24}
-                    strokeWidth={1.5}
-                    className="fill-transparent group-hover:fill-white/10 transition-all duration-500"
-                    style={{ transform: `rotate(${item.rotate}deg)` }}
-                  />
-                </motion.div>
-              </button>
-            </div>
+                <item.icon size={22} strokeWidth={1.5} />
+              </motion.div>
+
+              {/* ТЕКСТ: Вертикальный + эффект расширения букв (tracking) */}
+              <motion.span
+                className="writing-vertical-rl text-[10px] font-bold uppercase font-serif"
+                variants={{
+                  initial: { opacity: 0.5, letterSpacing: "0.1em", y: 0 },
+                  hover: { opacity: 1, letterSpacing: "0.3em", y: 2 } // Растягиваем буквы
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
+                {item.label}
+              </motion.span>
+            </motion.button>
           ))}
         </div>
 
-        {/* Decorative Bottom Element */}
-        <div className="w-[1px] h-24 bg-stone-800 relative">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-stone-500 rounded-full" />
+        {/* Декор внизу */}
+        <div className="w-[1px] h-16 bg-gradient-to-b from-stone-800 to-transparent relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-stone-500 rounded-full" />
         </div>
       </nav>
 
-      {/* ================= MOBILE HEADER (Hidden on Desktop) ================= */}
+      {/* ================= MOBILE HEADER (Без изменений, только тексты) ================= */}
       <nav className="md:hidden fixed top-0 left-0 right-0 h-16 bg-[#050505]/90 backdrop-blur-md border-b border-stone-800 z-50 flex items-center justify-between px-6">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -92,7 +112,6 @@ const Navigation: React.FC = () => {
         </button>
       </nav>
 
-      {/* ================= MOBILE MENU OVERLAY ================= */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
