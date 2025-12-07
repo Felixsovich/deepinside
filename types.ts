@@ -1,22 +1,12 @@
-export interface Project {
-  id: number;
-  title: string;
-  category: string;
-  image: string;
-  year: string;
-  html?: string; // Опциональное поле для HTML iframe
-}
-
-export interface Service {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-}
-
 export interface MenuItem {
   label: string;
   href: string;
+}
+
+export interface SlideColors {
+  background: string;
+  text: string;
+  subtext: string;
 }
 
 export interface Slide {
@@ -24,11 +14,26 @@ export interface Slide {
   title: string;
   subtitle: string;
   description: string;
-  html?: string; // Опциональное поле для HTML iframe
-  image?: string; // Теперь опциональное - может быть либо HTML, либо image
-  colors: {
-    background: string;
-    text: string;
-    subtext: string;
-  };
+  image?: string; // Картинка
+  html?: string;  // iframe (оставляем для совместимости)
+  colors: SlideColors;
+}
+
+export interface Project {
+  id: number;
+  title: string;
+  category: string;
+  image: string;
+  year: string;
+  // Вот эти новые поля, из-за которых была ошибка:
+  shortDesc?: string; // Вопросительный знак значит "не обязательно", но мы их заполнили
+  fullStory?: string;
+  html?: string;
+}
+
+export interface Service {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
 }
