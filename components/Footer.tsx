@@ -107,7 +107,7 @@ const Footer: React.FC = () => {
                   <span>Telegram</span>
                 </a>
                 <a
-                  href="https://instagram.com/starunstyle"
+                  href="https://www.instagram.com/why_not_regress"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 text-stone-300 hover:text-violet-400 transition-colors group text-lg"
