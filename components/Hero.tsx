@@ -1,0 +1,110 @@
+import React from 'react';
+import { motion, Variants } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+
+const Hero: React.FC = () => {
+  const textVariants: Variants = {
+    initial: { y: "100%" },
+    animate: { y: 0, transition: { duration: 1, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] } }
+  };
+
+  return (
+    <section className="h-screen flex flex-col justify-center px-6 md:px-16 pb-20 overflow-hidden relative border-b border-stone-900 bg-black">
+
+      {/* Video Background */}
+      <motion.div
+        className="absolute inset-0 z-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 2.5 }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover grayscale opacity-50"
+        >
+          <source src="/src/video/forest_01.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/90" />
+      </motion.div>
+
+      {/* Основной заголовок - крупный */}
+      <div className="flex flex-col relative z-10 mix-blend-screen px-2 md:px-0 mb-12">
+        {["ТВОЯ", "ИСТОРИЯ", "НАЧАЛАСЬ", "НЕ СЕГОДНЯ"].map((line, index) => (
+          <div key={index} className="overflow-hidden -mt-2 md:-mt-3">
+            <motion.h1
+              className="text-[13vw] md:text-[9vw] leading-[0.9] font-normal tracking-[-0.02em] text-stone-100 uppercase"
+              style={{
+                fontFamily: '"InterTight", -apple-system, BlinkMacSystemFont, sans-serif',
+                fontWeight: 600,
+                letterSpacing: '-0.03em'
+              }}
+              variants={textVariants}
+              initial="initial"
+              animate="animate"
+              custom={index}
+              transition={{
+                delay: 1.2 + (index * 0.08),
+                duration: 1.1,
+                ease: [0.76, 0, 0.24, 1] as [number, number, number, number]
+              }}
+            >
+              {line}
+            </motion.h1>
+          </div>
+        ))}
+      </div>
+
+      {/* Подзаголовок - меньше */}
+      <motion.div
+        className="relative z-10 max-w-2xl mx-auto md:mx-0"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.8, duration: 1 }}
+      >
+        <h2
+          className="text-4xl md:text-6xl font-light text-stone-200 leading-tight tracking-tight mb-12"
+          style={{
+            fontFamily: '"InterTight", -apple-system, BlinkMacSystemFont, sans-serif',
+            fontWeight: 300
+          }}
+        >
+          ПОЙДЁМ ГЛУБЖЕ?
+        </h2>
+
+        {/* CTA кнопка - яркая и сочная */}
+        <motion.a
+          href="https://t.me/starunstyle"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-4 px-10 py-5 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white rounded-full font-medium hover:from-violet-500 hover:to-fuchsia-500 transition-all duration-300 group shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:shadow-[0_0_60px_rgba(168,85,247,0.6)] hover:scale-105"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 2.2, duration: 0.5 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className="text-lg font-medium tracking-wide">Записаться на сеанс</span>
+          <ArrowRight size={24} className="group-hover:translate-x-2 transition-transform duration-300" />
+        </motion.a>
+      </motion.div>
+
+      {/* Минималистичный scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.8 }}
+      >
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-stone-400 to-transparent animate-pulse" />
+          <span className="text-xs uppercase tracking-[0.3em] text-stone-500 font-light">Scroll</span>
+        </div>
+      </motion.div>
+    </section>
+  );
+};
+
+export default Hero;

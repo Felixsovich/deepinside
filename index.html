@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- === SEO: НАСТРОЙКА СОЗНАНИЯ === -->
+  <title>Регрессолог Елизавета [ФАМИЛИЯ] | Регрессия, Психосоматика, Гипноз</title>
+  <meta name="description"
+    content="Помощь регрессолога в проработке страхов, блоков и психосоматики. Авторские сеансы регрессивного гипноза онлайн. Путешествие в прошлые жизни." />
+  <meta name="keywords"
+    content="регрессолог, регрессия, прошлая жизнь, гипноз, психосоматика, подсознание, страхи, deepinside" />
+  <meta name="author" content="Елизавета [ФАМИЛИЯ]" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Каноническая ссылка -->
+  <link rel="canonical" href="https://deepinside.pro/" />
+
+  <!-- === SOCIAL: Open Graph === -->
+  <meta property="og:title" content="DeepInside | Регрессия и Трансформация" />
+  <meta property="og:description"
+    content="Узнай причину своих проблем в прошлом. Сеансы регрессивного гипноза и глубокая проработка психосоматики." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://deepinside.pro/" />
+  <meta property="og:image" content="https://deepinside.pro/preview.jpg" />
+  <meta property="og:site_name" content="DeepInside" />
+
+  <!-- === ИКОНКИ (FAVICONS) === -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-01DH2XZM56"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-01DH2XZM56');
+  </script>
+
+  <!-- === ШРИФТЫ === -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Современный французский шрифт Inter Tight -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Твои оригинальные шрифты (для совместимости, если где-то ещё используются) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter Tight', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #0a0a0a;
+      color: #e5e5e5;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Селекция текста */
+    ::selection {
+      background-color: #84cc16;
+      color: #000000;
+    }
+
+    /* Заголовки могут использовать Inter Tight или оригинальный Cormorant */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Inter Tight', 'Cormorant Garamond', serif;
+    }
+
+    /* Плавный кастомный скроллбар */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #84cc16 0%, #10b981 100%);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #a3e635 0%, #34d399 100%);
+    }
+
+    /* Убираем кастомный курсор - теперь обычный */
+    * {
+      cursor: default !important;
+    }
+
+    a,
+    button,
+    [role="button"] {
+      cursor: pointer !important;
+    }
+
+    /* Анимация загрузки */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    #root {
+      animation: fadeIn 0.3s ease-in;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
