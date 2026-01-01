@@ -42,11 +42,9 @@ const WorkItem: React.FC<{ item: typeof PROJECTS[0], index: number, onClick: () 
 
         <div className="absolute bottom-6 left-6 right-6 z-10">
           <p className="text-stone-400 text-sm mb-2 font-mono">{item.category}</p>
-          <TextReveal className="text-2xl text-stone-100 leading-none"
-            style={{
-              fontFamily: '"InterTight", -apple-system, BlinkMacSystemFont, sans-serif',
-              fontWeight: 500
-            }}
+          <TextReveal
+            className="text-2xl text-stone-100 leading-none"
+          // style проп убран, так как TextReveal его не принимает
           >
             {item.title}
           </TextReveal>
@@ -74,7 +72,7 @@ const Work: React.FC = () => {
     <section id="work" className="py-24 px-6 md:px-16 bg-stone-950 relative">
       <div className="flex flex-col md:flex-row justify-between items-end mb-16 md:mb-24 border-b border-stone-800 pb-8">
         <div className="max-w-2xl">
-          <TextReveal
+          <h2
             className="text-4xl md:text-7xl font-semibold tracking-tight uppercase mb-2 text-stone-200"
             style={{
               fontFamily: '"InterTight", -apple-system, BlinkMacSystemFont, sans-serif',
@@ -82,7 +80,7 @@ const Work: React.FC = () => {
             }}
           >
             Истории Исцеления
-          </TextReveal>
+          </h2>
         </div>
 
         <span className="text-stone-500 mt-4 md:mt-0 flex items-center gap-2"
